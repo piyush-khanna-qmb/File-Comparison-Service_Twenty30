@@ -1,0 +1,14 @@
+Diff request POST data: <QueryDict: {'file1': ['temp_uploads\\test1.txt'], 'file2': ['temp_uploads\\test2.txt']}>
+Diff request POST data: <QueryDict: {'file1': ['temp_uploads\\test2.json'], 'file2': ['temp_uploads\\test1.json']}>
+Diff request POST data: <QueryDict: {'file1': ['temp_uploads\\twenty30_twenty30-dev_72_Jan_24_2025+export_Jan_25_2025.json'], 'file2': ['temp_uploads\\CitrixWorkspaceApp.exe']}>
+Diff request POST data: <QueryDict: {'file1': ['temp_uploads\\test1.json'], 'file2': ['temp_uploads\\test2.json']}>
+Diff request POST data: <QueryDict: {'file1': ['temp_uploads\\test1.json'], 'file2': ['temp_uploads\\test1.json']}>
+Diff request POST data: <QueryDict: {'file1': ['temp_uploads\\test1.json'], 'file2': ['temp_uploads\\test2.json']}>
+Diff request POST data: <QueryDict: {'file1': ['temp_uploads\\test2.json'], 'file2': ['temp_uploads\\test1.json']}>
+Diff request POST data: <QueryDict: {'file1': ['temp_uploads\\test2.json'], 'file2': ['temp_uploads\\test2.json']}>
+Diff request POST data: <QueryDict: {'file1': ['temp_uploads\\twenty30_twenty30-dev_72_Jan_24_2025+export_Jan_25_2025.json'], 'file2': ['temp_uploads\\test2.json']}>
+Diff request POST data: <QueryDict: {'file1': ['temp_uploads\\twenty30_twenty30-dev_72_Jan_24_2025+export_Jan_25_2025.json'], 'file2': ['temp_uploads\\test1.json']}>
+Difference calculation error: 'charmap' codec can't decode byte 0x9d in position 2372: character maps to <undefined>
+Difference calculation error: 'charmap' codec can't decode byte 0x9d in position 2372: character maps to <undefined>
+Difference calculation error: 'charmap' codec can't decode byte 0x9d in position 2365: character maps to <undefined>
+Invalid input - source: , target: 
