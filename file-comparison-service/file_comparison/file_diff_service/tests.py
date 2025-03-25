@@ -12,11 +12,9 @@ class FileDiffServiceTestCase(TestCase):
         """
         self.client = Client()
         
-        # Create temporary upload directory if not exists
         self.temp_upload_dir = os.path.join(settings.BASE_DIR, 'temp_uploads')
         os.makedirs(self.temp_upload_dir, exist_ok=True)
         
-        # Create sample text files for testing
         self.sample_file1 = SimpleUploadedFile(
             "file1.txt", 
             b"Hello, this is file 1 content\nLine 2 of file 1\nUnique to file 1", 
@@ -28,7 +26,6 @@ class FileDiffServiceTestCase(TestCase):
             content_type="text/plain"
         )
         
-        # Create identical files for comparison
         self.identical_file1 = SimpleUploadedFile(
             "identical1.txt", 
             b"This is an identical file content\nWith multiple lines", 
@@ -48,7 +45,6 @@ class FileDiffServiceTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'index.html')
         
-        # Check file existence context
         self.assertIn('file1_exists', response.context)
         self.assertIn('file2_exists', response.context)
 
@@ -56,24 +52,19 @@ class FileDiffServiceTestCase(TestCase):
         """
         Test file upload functionality
         """
-        # Prepare files for upload
         file_data = {
             'file1': self.sample_file1,
             'file2': self.sample_file2
         }
         
-        # Upload files
         response = self.client.post(reverse('upload_files'), file_data)
         
-        # Check response
         self.assertEqual(response.status_code, 200)
         response_data = response.json()
         
-        # Verify files were saved
         self.assertIn('message', response_data)
         self.assertEqual(response_data['message'], 'Files uploaded successfully')
         
-        # Verify files exist in temp directory
         file1_path = os.path.join(self.temp_upload_dir, 'file1.txt')
         file2_path = os.path.join(self.temp_upload_dir, 'file2.txt')
         self.assertTrue(os.path.exists(file1_path))
@@ -83,10 +74,8 @@ class FileDiffServiceTestCase(TestCase):
         """
         Test file upload with missing files
         """
-        # Try uploading only one file
         response = self.client.post(reverse('upload_files'), {'file1': self.sample_file1})
         
-        # Check error response
         self.assertEqual(response.status_code, 400)
         response_data = response.json()
         self.assertIn('error', response_data)
@@ -96,21 +85,17 @@ class FileDiffServiceTestCase(TestCase):
         """
         Test difference calculation between two different files
         """
-        # First upload files
         file_data = {
             'file1': self.sample_file1,
             'file2': self.sample_file2
         }
         self.client.post(reverse('upload_files'), file_data)
         
-        # Get differences
         response = self.client.get(reverse('show_difference'))
         
-        # Check response
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'difference.html')
         
-        # Verify diff exists
         context = response.context
         self.assertIn('diff', context)
         self.assertIsNotNone(context['diff'])
@@ -119,42 +104,34 @@ class FileDiffServiceTestCase(TestCase):
         """
         Test difference calculation for identical files
         """
-        # Upload identical files
         file_data = {
             'file1': self.identical_file1,
             'file2': self.identical_file2
         }
         self.client.post(reverse('upload_files'), file_data)
         
-        # Get differences
         response = self.client.get(reverse('show_difference'))
         
-        # Check response
         self.assertEqual(response.status_code, 200)
         context = response.context
         
-        # Verify no differences
         self.assertIsNone(context['diff'])
 
     def test_promote_page(self):
         """
         Test promote page rendering
         """
-        # Upload files first
         file_data = {
             'file1': self.sample_file1,
             'file2': self.sample_file2
         }
         self.client.post(reverse('upload_files'), file_data)
         
-        # Access promote page
         response = self.client.get(reverse('promote_page'))
         
-        # Check response
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'promote.html')
         
-        # Verify context
         context = response.context
         self.assertIn('file1_content', context)
         self.assertIn('file2_content', context)
@@ -163,14 +140,12 @@ class FileDiffServiceTestCase(TestCase):
         """
         Test content promotion with overwrite
         """
-        # Upload files first
         file_data = {
             'file1': self.sample_file1,
             'file2': self.sample_file2
         }
         self.client.post(reverse('upload_files'), file_data)
         
-        # Promote content
         promote_data = {
             'source_file': 'file1.txt',
             'target_file': 'file2.txt',
@@ -178,7 +153,6 @@ class FileDiffServiceTestCase(TestCase):
         }
         response = self.client.post(reverse('promote_file_content'), promote_data)
         
-        # Check response
         self.assertEqual(response.status_code, 200)
         response_data = response.json()
         self.assertIn('message', response_data)
@@ -188,14 +162,12 @@ class FileDiffServiceTestCase(TestCase):
         """
         Test content promotion with merge
         """
-        # Upload files first
         file_data = {
             'file1': self.sample_file1,
             'file2': self.sample_file2
         }
         self.client.post(reverse('upload_files'), file_data)
         
-        # Promote content
         promote_data = {
             'source_file': 'file1.txt',
             'target_file': 'file2.txt',
@@ -203,7 +175,6 @@ class FileDiffServiceTestCase(TestCase):
         }
         response = self.client.post(reverse('promote_file_content'), promote_data)
         
-        # Check response
         self.assertEqual(response.status_code, 200)
         response_data = response.json()
         self.assertIn('message', response_data)
@@ -213,12 +184,10 @@ class FileDiffServiceTestCase(TestCase):
         """
         Test routes when no files are uploaded
         """
-        # Test difference page
         diff_response = self.client.get(reverse('show_difference'))
         self.assertTemplateUsed(diff_response, 'difference.html')
         self.assertIn('error', diff_response.context)
 
-        # Test promote page
         promote_response = self.client.get(reverse('promote_page'))
         self.assertEqual(promote_response.status_code, 404)
 

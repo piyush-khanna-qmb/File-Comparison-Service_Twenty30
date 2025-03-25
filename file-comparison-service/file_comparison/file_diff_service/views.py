@@ -6,18 +6,12 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.conf import settings
 
-# Configure logging
 logger = logging.getLogger(__name__)
 
-# Temporary upload directory
 UPLOAD_DIR = os.path.join(settings.BASE_DIR, 'temp_uploads')
 os.makedirs(UPLOAD_DIR, exist_ok=True)
 
 def index(request):
-    """
-    Main index page for file upload and management
-    """
-    # Check if files exist from previous upload
     file1_path = os.path.join(UPLOAD_DIR, 'file1.txt')
     file2_path = os.path.join(UPLOAD_DIR, 'file2.txt')
     
@@ -38,11 +32,9 @@ def upload_files(request):
             return JsonResponse({'error': 'Both files are required'}, status=400)
         
         try:
-            # Save files with predictable names
             file1_path = os.path.join(UPLOAD_DIR, 'file1.txt')
             file2_path = os.path.join(UPLOAD_DIR, 'file2.txt')
             
-            # Write files
             with open(file1_path, 'wb+') as destination:
                 for chunk in file1.chunks():
                     destination.write(chunk)
@@ -69,27 +61,23 @@ def show_difference(request):
     file1_path = os.path.join(UPLOAD_DIR, 'file1.txt')
     file2_path = os.path.join(UPLOAD_DIR, 'file2.txt')
     
-    # Check if files exist
     if not (os.path.exists(file1_path) and os.path.exists(file2_path)):
         return render(request, 'difference.html', {
             'error': 'Files not found. Please upload files first.'
         })
     
     try:
-        # Read file contents with error handling for encoding
         try:
             with open(file1_path, 'r', encoding='utf-8') as f1, \
                  open(file2_path, 'r', encoding='utf-8') as f2:
                 file1_lines = f1.readlines()
                 file2_lines = f2.readlines()
         except UnicodeDecodeError:
-            # Fallback to latin-1 encoding if UTF-8 fails
             with open(file1_path, 'r', encoding='latin-1') as f1, \
                  open(file2_path, 'r', encoding='latin-1') as f2:
                 file1_lines = f1.readlines()
                 file2_lines = f2.readlines()
         
-        # Use difflib to generate differences
         diff = list(difflib.unified_diff(
             file1_lines, 
             file2_lines, 
@@ -117,7 +105,6 @@ def promote_page(request):
     file1_path = os.path.join(UPLOAD_DIR, 'file1.txt')
     file2_path = os.path.join(UPLOAD_DIR, 'file2.txt')
     
-    # Check if files exist
     if not (os.path.exists(file1_path) and os.path.exists(file2_path)):
         return JsonResponse({'error': 'Files not found. Please upload files first.'}, status=404)
     
@@ -147,28 +134,23 @@ def promote_file_content(request):
         target_file = request.POST.get('target_file', 'file2.txt')
         merge_type = request.POST.get('merge_type', 'overwrite')
         
-        # Construct full file paths
         source_path = os.path.join(UPLOAD_DIR, source_file)
         target_path = os.path.join(UPLOAD_DIR, target_file)
         
-        # Check if files exist
         if not (os.path.exists(source_path) and os.path.exists(target_path)):
             return JsonResponse({'error': 'Files not found. Please upload files first.'}, status=404)
         
         try:
-            # Read source and target file contents
             with open(source_path, 'r', encoding='utf-8') as src, \
                  open(target_path, 'r', encoding='utf-8') as tgt:
                 source_content = src.read()
                 target_content = tgt.read()
             
-            # Determine final content based on merge type
             if merge_type == 'overwrite':
                 final_content = source_content
-            else:  # merge
+            else:
                 final_content = target_content + "\n" + source_content
             
-            # Write back to target file
             with open(target_path, 'w', encoding='utf-8') as tgt:
                 tgt.write(final_content)
             

@@ -1,6 +1,6 @@
 # file_diff_service/file_utils.py
 import mimetypes
-import magic  # You'll need to pip install python-magic
+import magic
 import os
 
 def is_text_file(file_path):
@@ -17,7 +17,6 @@ def is_text_file(file_path):
     - Log files (.log)
     - Source code files (.py, .js, .html, .css, etc.)
     """
-    # List of text-based MIME types and extensions
     text_mime_types = [
         'text/plain',
         'text/csv',
@@ -43,15 +42,12 @@ def is_text_file(file_path):
     ]
     
     try:
-        # Use python-magic to get the MIME type
         mime = magic.Magic(mime=True)
         file_mime = mime.from_file(file_path)
         
-        # Check MIME type
         if any(text_type in file_mime.lower() for text_type in text_mime_types):
             return True
         
-        # Check file extension
         import os
         file_ext = os.path.splitext(file_path)[1].lower()
         if file_ext in text_extensions:
@@ -65,17 +61,15 @@ def is_text_file(file_path):
 
 def validate_text_files(file1_path, file2_path):
     """
-    Validate that both files are text-based.
+    This validates both files are text-based.
     
     Returns:
     - (True, None) if both files are text-based
     - (False, error_message) if validation fails
     """
-    # Check first file
     if not is_text_file(file1_path):
         return False, f"File 1 ({os.path.basename(file1_path)}) is not a text-based file"
     
-    # Check second file
     if not is_text_file(file2_path):
         return False, f"File 2 ({os.path.basename(file2_path)}) is not a text-based file"
     
