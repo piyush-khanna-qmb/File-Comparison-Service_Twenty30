@@ -1,0 +1,57 @@
+D:.
+│   .gitignore
+│   Dockerfile
+│   README.md
+│   requirements.txt
+│
+└───file_comparison
+    │   .coverage
+    │   db.sqlite3
+    │   debug.log
+    │   manage.py
+    │
+    ├───file_comparison
+    │   │   asgi.py
+    │   │   settings.py
+    │   │   urls.py
+    │   │   wsgi.py
+    │   │   __init__.py
+    │   │
+    │   └───__pycache__
+    │           settings.cpython-313.pyc
+    │           urls.cpython-313.pyc
+    │           wsgi.cpython-313.pyc
+    │           __init__.cpython-313.pyc
+    │
+    ├───file_diff_service
+    │   │   admin.py
+    │   │   apps.py
+    │   │   file_utils.py
+    │   │   models.py
+    │   │   tests.py
+    │   │   urls.py
+    │   │   views.py
+    │   │   __init__.py
+    │   │
+    │   ├───migrations
+    │   │   │   __init__.py
+    │   │   │
+    │   │   └───__pycache__
+    │   │           __init__.cpython-313.pyc
+    │   │
+    │   ├───templates
+    │   │       difference.html
+    │   │       index.html
+    │   │       promote.html
+    │   │
+    │   └───__pycache__
+    │
+    ├───static
+    │   ├───css
+    │   │       placeholder.css
+    │   │
+    │   └───js
+    │           promote.js
+    │
+    │
+    └───temp_uploads

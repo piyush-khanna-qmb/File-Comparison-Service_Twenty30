@@ -18,11 +18,7 @@ RUN apt-get update && apt-get install -y \
 COPY . /app/
 
 # Install Python dependencies
-RUN pip install --no-cache-dir -r requirements.txt coverage
-
-RUN coverage run manage.py test
-RUN coverage report
-RUN coverage html
+RUN pip install --no-cache-dir -r requirements.txt
 
 # Set the working directory to the Django project directory
 WORKDIR /app/file_comparison
