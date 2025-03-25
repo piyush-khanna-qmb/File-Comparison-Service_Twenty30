@@ -19,6 +19,7 @@ COPY . /app/
 
 # Install Python dependencies
 RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install coverage
 
 # Set the working directory to the Django project directory
 WORKDIR /app/file_comparison
@@ -31,3 +32,5 @@ EXPOSE 8000
 
 # Run the application
 CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+
+# ENTRYPOINT ["/bin/sh", "-c"]
